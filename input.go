@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/eiannone/keyboard"
 )
 
@@ -9,7 +11,8 @@ type Key int
 const (
 	LeftArrow  Key = 0
 	RightArrow     = 1
-	OtherKey       = 2
+	Escape         = 2
+	OtherKey       = 3
 )
 
 func getKey() Key {
@@ -25,7 +28,11 @@ func getKey() Key {
 		panic(err)
 	}
 
-	return determineArrowDirection(key)
+	direction := determineArrowDirection(key)
+	if direction == Escape {
+		os.Exit(0)
+	}
+	return direction
 }
 
 func determineArrowDirection(key keyboard.Key) Key {
@@ -33,6 +40,8 @@ func determineArrowDirection(key keyboard.Key) Key {
 		return LeftArrow
 	} else if key == 65514 {
 		return RightArrow
+	} else if key == 27 {
+		return Escape
 	} else {
 		return OtherKey
 	}
