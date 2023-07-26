@@ -20,7 +20,14 @@ func question(choices Choices, firstTime bool) (isDone bool) {
 	if ok == false {
 		return true
 	}
-	choice := binaryChoice([2]string{choice1, choice2}, firstTime)
+	var choice string
+	choiceSlice := []string{choice1, choice2}
+	if found, ok := getCache(choiceSlice); ok {
+		choice = choiceSlice[found]
+	} else {
+		choice = binaryChoice([2]string{choice1, choice2}, firstTime)
+		addCache(choiceSlice, choice)
+	}
 	choices[choice] += 1
 	return question(choices, false)
 }

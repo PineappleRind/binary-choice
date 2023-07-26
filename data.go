@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"time"
 )
 
 type Data []string
@@ -16,7 +17,8 @@ func readPath() (data []byte, valid bool) {
 
 	contents, err := os.ReadFile(path)
 	if err != nil {
-		fmt.Println("Specified data path does not exist, using default data")
+		fmt.Print("Specified data path does not exist, using default data")
+		time.Sleep(time.Second)
 		return []byte{}, false
 	}
 

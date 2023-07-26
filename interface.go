@@ -36,15 +36,18 @@ func binaryChoice(choice [2]string, arrows bool) string {
 
 	arrow := getKey()
 	if arrow == OtherKey {
-		fmt.Printf("\r\x1b[K")
+		eraseLine()
 		return binaryChoice(choice, arrows)
 	}
-	// Move cursor back to first column
-	fmt.Printf("\r\x1b[K")
+	eraseLine()
 	// Highlight the right choice
 	fmt.Print(formatChoices(arrow))
 	time.Sleep(200 * time.Millisecond)
 
-	fmt.Printf("\r\x1b[K")
+	eraseLine()
 	return choice[arrow] // This is a bit confusing since arrow is part of an enum 😅
+}
+
+func eraseLine() {
+	fmt.Printf("\r\x1b[K")
 }
