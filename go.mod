@@ -1,4 +1,4 @@
-module github.com/PineappleRind/binary-choice.git
+module github.com/PineappleRind/binary-choice
 
 go 1.19
 
