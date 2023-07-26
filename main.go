@@ -1,10 +1,9 @@
 package main
 
-import "fmt"
-
 func main() {
-	// key := input()
-	// fmt.Printf("%X", key)
-	data := getData()
-	fmt.Print(data)
+	// key := getKey()
+	// fmt.Printf("%d", key)
+	// data := getData()
+	// fmt.Print(data)
+	binaryPrompt("", [2]string{"What's Æ?", "ÆÆÆÆÆÆÆ"}, false)
 }
