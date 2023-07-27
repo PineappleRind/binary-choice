@@ -4,55 +4,35 @@ import (
 	"fmt"
 )
 
-type Choices map[string]uint
+type Ranking map[string]uint
 
 func beginLoop(data Data) {
-	choices := choicesFromData(data)
-	isDone := question(choices, true)
-	if isDone == true {
-		fmt.Print(choices)
+	comparisons := determineComparisons(data)
+	choices := rankingFromComparisons(comparisons)
+
+	for i, name := range comparisons {
+		choice := question(name, i)
+		choices[choice] += 1
 	}
+	// isDone := question(choices, 1)
+
+	fmt.Print(choices)
 }
 
-func question(choices Choices, firstTime bool) (isDone bool) {
-	choice1, choice2, ok := findTie(choices)
+func question(choices string, number int) (choice string) {
+	choice1, choice2 := deserialize(choices)
 
-	if ok == false {
-		return true
-	}
-	var choice string
-	choiceSlice := []string{choice1, choice2}
-	if found, ok := getCache(choiceSlice); ok {
-		choice = choiceSlice[found]
-	} else {
-		choice = binaryChoice([2]string{choice1, choice2}, firstTime)
-		addCache(choiceSlice, choice)
-	}
-	choices[choice] += 1
-	return question(choices, false)
+	fmt.Print(color(fmt.Sprintf("#%d — \n", number), 2))
+
+	return binaryChoice([2]string{choice1, choice2}, number == 0)
 }
 
-func findTie(choices Choices) (choice1 string, choice2 string, ok bool) {
-	seenScores := map[uint]string{}
-	// due to map iterations being random,
-	// `choices` is already randomized
-	for name, score := range choices {
-		if _, alreadySeen := seenScores[score]; !alreadySeen {
-			seenScores[score] = name
-			continue
-		}
-		// If we have seen this score already,
-		// return this name along with seenScores[score]
-		return seenScores[score], name, true
-	}
-	// no ties left: we have a winner!!
-	return "", "", false
-}
-
-func choicesFromData(data Data) Choices {
-	choices := Choices{}
-	for _, name := range data {
-		choices[name] = 0
+func rankingFromComparisons(comparisons Comparisons) Ranking {
+	choices := Ranking{}
+	for _, name := range comparisons {
+		choice1, choice2 := deserialize(name)
+		choices[choice1] = 0
+		choices[choice2] = 0
 	}
 	return choices
 }

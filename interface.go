@@ -41,7 +41,7 @@ func binaryChoice(choice [2]string, arrows bool) string {
 	}
 	eraseLine()
 	// Highlight the right choice
-	fmt.Print(formatChoices(arrow))
+	fmt.Println(formatChoices(arrow))
 	time.Sleep(200 * time.Millisecond)
 
 	eraseLine()
